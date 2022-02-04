@@ -1,23 +1,20 @@
 package com.tistory.hitomis.springboot_practice1.service;
 
 import com.tistory.hitomis.springboot_practice1.dto.CreateDeveloper;
+import com.tistory.hitomis.springboot_practice1.dto.DeveloperDetailDto;
 import com.tistory.hitomis.springboot_practice1.dto.DeveloperDto;
 import com.tistory.hitomis.springboot_practice1.entity.Developer;
 import com.tistory.hitomis.springboot_practice1.exception.CustomException;
-import com.tistory.hitomis.springboot_practice1.exception.CustomException;
 import com.tistory.hitomis.springboot_practice1.repository.DeveloperRepository;
 import com.tistory.hitomis.springboot_practice1.type.DeveloperLevel;
-import com.tistory.hitomis.springboot_practice1.type.DeveloperSkillType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
-import static com.tistory.hitomis.springboot_practice1.exception.CustomErrorCode.DUPLICATED_MEMBER_ID;
-import static com.tistory.hitomis.springboot_practice1.exception.CustomErrorCode.LEVEL_EXPERIENCE_YEARS_NOT_MATCHED;
+import static com.tistory.hitomis.springboot_practice1.exception.CustomErrorCode.*;
 
 @Service
 @RequiredArgsConstructor
@@ -73,5 +70,11 @@ public class DeveloperService {
         return developerRepository.findAll()
                 .stream().map(DeveloperDto::fromEntity)
                 .collect(Collectors.toList());
+    }
+
+    public DeveloperDetailDto getDeveloperDetail(String memberId) {
+        return developerRepository.findByMemberId(memberId)
+                .map(DeveloperDetailDto::fromEntity)
+                .orElseThrow(() -> new CustomException(NO_DEVELOPER));
     }
 }
