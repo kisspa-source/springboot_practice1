@@ -1,6 +1,7 @@
 package com.tistory.hitomis.springboot_practice1.service;
 
 import com.tistory.hitomis.springboot_practice1.dto.CreateDeveloper;
+import com.tistory.hitomis.springboot_practice1.dto.DeveloperDto;
 import com.tistory.hitomis.springboot_practice1.entity.Developer;
 import com.tistory.hitomis.springboot_practice1.exception.CustomException;
 import com.tistory.hitomis.springboot_practice1.exception.CustomException;
@@ -11,7 +12,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static com.tistory.hitomis.springboot_practice1.exception.CustomErrorCode.DUPLICATED_MEMBER_ID;
 import static com.tistory.hitomis.springboot_practice1.exception.CustomErrorCode.LEVEL_EXPERIENCE_YEARS_NOT_MATCHED;
@@ -22,19 +25,22 @@ public class DeveloperService {
     private final DeveloperRepository developerRepository;
 
     @Transactional
-    public void createDeveloper(CreateDeveloper.Request request) {
+    public CreateDeveloper.Response createDeveloper(CreateDeveloper.Request request) {
 
+        // validation check
         validateCreateDeveloperRequest(request);
 
         Developer developer = Developer.builder()
-                .developerLevel(DeveloperLevel.JUNIOR)
-                .developerSkillType(DeveloperSkillType.FRONT_END)
-                .experienceYears(2)
-                .name("hitomis")
-                .age(14)
+                .developerLevel(request.getDeveloperLevel())
+                .developerSkillType(request.getDeveloperSkillType())
+                .experienceYears(request.getExperienceYears())
+                .name(request.getName())
+                .age(request.getAge())
+                .memberId(request.getMemberId())
                 .build();
 
         developerRepository.save(developer);
+        return CreateDeveloper.Response.fromEntity(developer);
     }
 
     private void validateCreateDeveloperRequest(CreateDeveloper.Request request) {
@@ -61,5 +67,11 @@ public class DeveloperService {
                     throw new CustomException(DUPLICATED_MEMBER_ID);
                 }));
 
+    }
+
+    public List<DeveloperDto> getAllDevelopers() {
+        return developerRepository.findAll()
+                .stream().map(DeveloperDto::fromEntity)
+                .collect(Collectors.toList());
     }
 }

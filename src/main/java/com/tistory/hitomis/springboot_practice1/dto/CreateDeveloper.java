@@ -1,5 +1,6 @@
 package com.tistory.hitomis.springboot_practice1.dto;
 
+import com.tistory.hitomis.springboot_practice1.entity.Developer;
 import com.tistory.hitomis.springboot_practice1.type.DeveloperLevel;
 import com.tistory.hitomis.springboot_practice1.type.DeveloperSkillType;
 import lombok.*;
@@ -46,9 +47,15 @@ public class CreateDeveloper {
         private DeveloperLevel developerLevel;
         private DeveloperSkillType developerSkillType;
         private Integer experienceYears;
-
         private String memberId;
-        private String name;
-        private Integer age;
+
+        public static Response fromEntity(Developer developer) {
+            return Response.builder()
+                    .developerLevel(developer.getDeveloperLevel())
+                    .developerSkillType(developer.getDeveloperSkillType())
+                    .experienceYears(developer.getExperienceYears())
+                    .memberId(developer.getMemberId())
+                    .build();
+        }
     }
 }

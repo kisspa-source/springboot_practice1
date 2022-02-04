@@ -1,6 +1,7 @@
 package com.tistory.hitomis.springboot_practice1.controller;
 
 import com.tistory.hitomis.springboot_practice1.dto.CreateDeveloper;
+import com.tistory.hitomis.springboot_practice1.dto.DeveloperDto;
 import com.tistory.hitomis.springboot_practice1.service.DeveloperService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -10,8 +11,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -23,22 +22,20 @@ import java.util.List;
 public class Practice1Controller {
     private final DeveloperService developerService;
 
-    @GetMapping("/developers")
-    public List<String> getAllDevelopers() {
-        // GET /developers HTTP/1.1
-        log.info("GET /developers HTTP/1.1");
-
-        return Arrays.asList("aa", "bb", "cc");
-    }
-
     @PostMapping("/create-developer")
-    public List<String> createDeveloper(
+    public CreateDeveloper.Response createDeveloper(
             @Valid @RequestBody CreateDeveloper.Request request
     ) {
         log.info("request : {}", request);
 
-        developerService.createDeveloper(request);
+        return developerService.createDeveloper(request);
+    }
 
-        return Collections.singletonList("sdf");
+    @GetMapping("/developers")
+    public List<DeveloperDto> getAllDevelopers() {
+        // GET /developers HTTP/1.1
+        log.info("GET /developers HTTP/1.1");
+
+        return developerService.getAllDevelopers();
     }
 }
