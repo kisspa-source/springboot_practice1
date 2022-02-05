@@ -2,6 +2,7 @@ package com.tistory.hitomis.springboot_practice1.entity;
 
 import com.tistory.hitomis.springboot_practice1.type.DeveloperLevel;
 import com.tistory.hitomis.springboot_practice1.type.DeveloperSkillType;
+import com.tistory.hitomis.springboot_practice1.code.StatusCode;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
@@ -37,6 +38,9 @@ public class Developer {
     private String memberId;
     private String name;
     private Integer age;
+
+    @Enumerated(EnumType.STRING)
+    private StatusCode statusCode;
 
     @CreatedDate
     private LocalDateTime createdAt;

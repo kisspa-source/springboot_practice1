@@ -1,5 +1,6 @@
 package com.tistory.hitomis.springboot_practice1.dto;
 
+import com.tistory.hitomis.springboot_practice1.code.StatusCode;
 import com.tistory.hitomis.springboot_practice1.entity.Developer;
 import com.tistory.hitomis.springboot_practice1.type.DeveloperLevel;
 import com.tistory.hitomis.springboot_practice1.type.DeveloperSkillType;
@@ -17,6 +18,7 @@ public class DeveloperDetailDto {
     private String memberId;
     private String name;
     private Integer age;
+    private StatusCode statusCode;
 
     public static DeveloperDetailDto fromEntity(Developer developer) {
         return DeveloperDetailDto.builder()
@@ -26,6 +28,7 @@ public class DeveloperDetailDto {
                 .memberId(developer.getMemberId())
                 .name(developer.getName())
                 .age(developer.getAge())
+                .statusCode(developer.getStatusCode())
                 .build();
     }
 }

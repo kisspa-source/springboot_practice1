@@ -1,2 +1,2 @@
-GET http://localhost:8080/developer/hitomis
+GET http://localhost:8080/developer/hohoho
 Accept: application/json
