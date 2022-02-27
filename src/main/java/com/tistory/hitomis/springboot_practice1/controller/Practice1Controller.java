@@ -1,14 +1,15 @@
 package com.tistory.hitomis.springboot_practice1.controller;
 
-import com.tistory.hitomis.springboot_practice1.dto.CreateDeveloper;
-import com.tistory.hitomis.springboot_practice1.dto.DeveloperDetailDto;
-import com.tistory.hitomis.springboot_practice1.dto.DeveloperDto;
-import com.tistory.hitomis.springboot_practice1.dto.EditDeveloper;
+import com.tistory.hitomis.springboot_practice1.dto.*;
+import com.tistory.hitomis.springboot_practice1.exception.CustomException;
 import com.tistory.hitomis.springboot_practice1.service.DeveloperService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.util.List;
 
@@ -86,4 +87,18 @@ public class Practice1Controller {
         developerService.deleteDeveloper(memberId);
         return null;
     }
+
+    @ResponseStatus(value = HttpStatus.CONFLICT)
+    @ExceptionHandler(CustomException.class)
+    public CustomErrorResponse handlerException(
+            CustomException e,
+            HttpServletRequest request
+    ) {
+        log.error("errorCode: {}, url: {}, message: {}",
+                e.getCustomErrorCode(), request.getRequestURI(), e.getDetailMessage());
+        return CustomErrorResponse.builder()
+                .errorCode(e.getCustomErrorCode())
+                .errorMessage(e.getDetailMessage()).build();
+    }
+
 }
