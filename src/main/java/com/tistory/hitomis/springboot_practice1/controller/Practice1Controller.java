@@ -87,18 +87,4 @@ public class Practice1Controller {
         developerService.deleteDeveloper(memberId);
         return null;
     }
-
-    @ResponseStatus(value = HttpStatus.CONFLICT)
-    @ExceptionHandler(CustomException.class)
-    public CustomErrorResponse handlerException(
-            CustomException e,
-            HttpServletRequest request
-    ) {
-        log.error("errorCode: {}, url: {}, message: {}",
-                e.getCustomErrorCode(), request.getRequestURI(), e.getDetailMessage());
-        return CustomErrorResponse.builder()
-                .errorCode(e.getCustomErrorCode())
-                .errorMessage(e.getDetailMessage()).build();
-    }
-
 }
